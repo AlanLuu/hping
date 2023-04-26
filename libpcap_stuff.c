@@ -35,7 +35,8 @@ int open_pcap()
 		printf("[open_pcap] pcap_open_live: %s\n", errbuf);
 		return -1;
 	}
-#if (!defined OSTYPE_LINUX) && (!defined __sun__)
+#if (!defined OSTYPE_LINUX) && (!defined __sun__) && \
+	(!defined OSTYPE_GNUKFREEBSD) && (!defined OSTYPE_GNU)
 	/* Return the packets to userspace as fast as possible */
 	if (ioctl(pcap_fileno(pcapfp), BIOCIMMEDIATE, &on) == -1)
 		perror("[open_pcap] ioctl(... BIOCIMMEDIATE ...)");

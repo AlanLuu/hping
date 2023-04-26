@@ -16,7 +16,7 @@
 void	show_usage(void)
 {
 	printf(
-"usage: hping host [options]\n"
+"usage: hping3 host [options]\n"
 "  -h  --help      show this help\n"
 "  -v  --version   show version\n"
 "  -c  --count     packet count\n"
@@ -50,7 +50,7 @@ void	show_usage(void)
 "  -r  --rel        relativize id field          (to estimate host traffic)\n"
 "  -f  --frag       split packets in more frag.  (may pass weak acl)\n"
 "  -x  --morefrag   set more fragments flag\n"
-"  -y  --dontfrag   set dont fragment flag\n"
+"  -y  --dontfrag   set don't fragment flag\n"
 "  -g  --fragoff    set the fragment offset\n"
 "  -m  --mtu        set virtual mtu, implies --frag if packet size > mtu\n"
 "  -o  --tos        type of service (default 0x00), try --tos help\n"
@@ -87,6 +87,7 @@ void	show_usage(void)
 "  -X  --xmas       set X unused flag (0x40)\n"
 "  -Y  --ymas       set Y unused flag (0x80)\n"
 "  --tcpexitcode    use last tcp->th_flags as exit code\n"
+"  --tcp-mss        enable the TCP MSS option with the given value\n"
 "  --tcp-timestamp  enable the TCP timestamp option to guess the HZ/uptime\n"
 "Clock skew detection\n"
 "  --clock-skew     enable clock skew detection. Try with -S against open port\n"
@@ -131,8 +132,8 @@ void icmp_help(void)
 "ICMP help:\n"
 " ICMP concerned packet options:\n"
 "  --icmp-ipver     set ip version               ( default 4 )\n"
-"  --icmp-iphlen    set ip header lenght         ( default IPHDR_SIZE >> 2)\n"
-"  --icmp-iplen     set ip total lengtht         ( default real lenght )\n"
+"  --icmp-iphlen    set ip header length         ( default IPHDR_SIZE >> 2)\n"
+"  --icmp-iplen     set ip total length          ( default real length )\n"
 "  --icmp-ipid      set ip id                    ( default random )\n"
 "  --icmp-ipproto   set ip protocol              ( default IPPROTO_TCP )\n"
 "  --icmp-ipsrc     set ip source                ( default 0.0.0.0 )\n"

@@ -33,6 +33,11 @@
 #include "apdutils.h"
 #include "sbignum.h"
 
+/* for systems that don't have PATH_MAX defined (GNU Hurd) */
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 #define HPING_IF_MAX	8
 
 /* ----------------------- hping recv handlers code ------------------------- */
@@ -67,7 +72,8 @@ static void HpingRecvCloseHandler(struct recv_handler *ra)
 static struct recv_handler *HpingRecvGetHandler(struct recv_handler *ra, int len, char *ifname, Tcl_Interp *interp)
 {
 	int i;
-	#if (!defined OSTYPE_LINUX) && (!defined __sun__)
+	#if (!defined OSTYPE_LINUX) && (!defined __sun__) && \
+		(!defined OSTYPE_GNUKFREEBSD)
 	int on = 1;
 	#endif
 
@@ -88,7 +94,8 @@ static struct recv_handler *HpingRecvGetHandler(struct recv_handler *ra, int len
 	ra[i].rh_pcapfp = pcap_open_live(ifname, 99999, 0, 1, ra[i].rh_pcap_errbuf);
 	if (ra[i].rh_pcapfp == NULL)
 		return NULL;
-	#if (!defined OSTYPE_LINUX) && (!defined __sun__)
+	#if (!defined OSTYPE_LINUX) && (!defined __sun__) && \
+		(!defined OSTYPE_GNUKFREEBSD) && (!defined OSTYPE_GNU)
 	/* Return the packets to userspace as fast as possible */
 	if (ioctl(pcap_fileno(ra[i].rh_pcapfp), BIOCIMMEDIATE, &on) == -1) {
 		/* XXX non-critical error */
@@ -1341,11 +1348,12 @@ static int HpingTcl_AppInit(Tcl_Interp *interp)
 	{
 		char *home = getenv("HOME");
 		if (home) {
-			char rcfile[PATH_MAX];
-			snprintf(rcfile, PATH_MAX, "%s/.hpingrc", home);
-			rcfile[PATH_MAX-1] = '\0';
+			char *rcfile;
+			if (asprintf(&rcfile, "%s/.hpingrc", home) < 0)
+				return TCL_ERROR;
 			Tcl_EvalFile(interp, rcfile);
 			Tcl_ResetResult(interp);
+			free(rcfile);
 		}
 	}
 	return TCL_OK;

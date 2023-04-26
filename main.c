@@ -44,7 +44,8 @@ unsigned int
 	signlen,
 	lsr_length = 0,
 	ssr_length = 0,
-	tcp_ack;
+	tcp_ack,
+	tcp_mss;
 
 
 unsigned short int
@@ -95,6 +96,7 @@ int
 	opt_tcpexitcode	= FALSE,
 	opt_badcksum	= FALSE,
 	opt_tr_keep_ttl = FALSE,
+	opt_tcp_mss	= FALSE,
 	opt_tcp_timestamp = FALSE,
         opt_clock_skew  = FALSE,
         cs_window       = DEFAULT_CS_WINDOW,
@@ -154,7 +156,7 @@ unsigned char
 	lsr		[255] = {0},
 	ssr		[255] = {0};
 
-unsigned
+char
 	ip_optlen	= 0;
 
 struct sockaddr_in
@@ -197,8 +199,8 @@ int main(int argc, char **argv)
 	}
 
 	if (parse_options(argc, argv) == -1) {
-		printf("hping2: missing host argument\n"
-			"Try `hping2 --help' for more information.\n");
+		printf("hping3: missing host argument\n"
+			"Try `hping3 --help' for more information.\n");
 		exit(1);
 	}
 
@@ -302,7 +304,7 @@ int main(int argc, char **argv)
 	/* if we are in listemode enter in listenmain() else  */
 	/* print HPING... bla bla bla and enter in wait_packet() */
 	if (opt_listenmode) {
-		fprintf(stderr, "hping2 listen mode\n");
+		fprintf(stderr, "hping3 listen mode\n");
 
 		/* memory protection */
 		if (memlockall() == -1) {

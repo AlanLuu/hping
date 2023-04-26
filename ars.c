@@ -361,7 +361,7 @@ void *ars_add_data(struct ars_packet *pkt, int size)
 	static void *ptr = "zzappt"; /* we can't return NULL for size == 0 */
 
 	if (size < 0) {
-		ars_set_error(pkt, "Tryed to add a DATA layer with size < 0");
+		ars_set_error(pkt, "Tried to add a DATA layer with size < 0");
 		return NULL;
 	}
 	retval = ars_add_generic(pkt, size, ARS_TYPE_DATA);
@@ -698,7 +698,7 @@ int ars_udptcp_cksum(struct ars_packet *pkt, int layer, u_int16_t *sum)
 	memcpy(&pseudo.daddr, &ip->daddr, 4);
 	pseudo.protocol = (pkt->p_layer[layer].l_type == ARS_TYPE_TCP)
 		? ARS_IPPROTO_TCP : ARS_IPPROTO_UDP;
-	pseudo.lenght = htons(ars_relative_size(pkt, layer));
+	pseudo.length = htons(ars_relative_size(pkt, layer));
 
 	/* Finally do the checksum */
 	ars_multi_cksum(&mc, ARS_MC_INIT, NULL, 0);
