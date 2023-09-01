@@ -18,10 +18,9 @@ Linux
 please, follows this steps:
 
 $ ./configure (first try ./configure --help)
-$ vi Makefile (optional)
+$ sudo ln -s /usr/include/pcap/bpf.h /usr/include/net/bpf.h
 $ make
-$ su
-# make install
+$ sudo make install
 
 FreeBSD, OpenBSD, NetBSD
 ------------------------
